@@ -4,6 +4,8 @@ import Link from "next/link"
 export default function AboutSlug({ params }) {
   return (
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center px-6">
+      {/* <Suspense fallback='Loading'> */}
+
       <div className="bg-gray-900/60 backdrop-blur-md border border-gray-800 rounded-2xl shadow-2xl p-10 max-w-2xl w-full text-center">
         
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -24,6 +26,7 @@ export default function AboutSlug({ params }) {
         >Back to About</Link>
 
       </div>
+      {/* </Suspense> */}
     </div>
   )
 }

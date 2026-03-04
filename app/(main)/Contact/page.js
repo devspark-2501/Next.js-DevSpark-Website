@@ -1,3 +1,7 @@
+export const metadata = {
+  title: 'Contact | DevSpark Website'
+}
+
 export default function Contact() {
   return (
     <div className="bg-gray-950 text-white min-h-[80vh] flex items-center">

@@ -1,3 +1,7 @@
+export const metadata = {
+  title: 'Projects | DevSpark Website'
+}
+
 export default function Projects() {
   const projects = [
     {
