@@ -10,6 +10,9 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
+    // throw new Error(""); {/* this line of code trigger global-error.js */}
+
   return (
     <html lang="en">
       <body className="bg-gray-950 text-white">
