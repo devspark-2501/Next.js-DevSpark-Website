@@ -136,4 +136,4 @@ export default function Review() {
       </div>
     </div>
   );
-}
+} // now will backend logic to it !!
