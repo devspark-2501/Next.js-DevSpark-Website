@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <>
-      {children} <CircleError /> <CircleChat />
+      {children} <CircleError /> <CircleChat /> 
     </>
   )
 }
