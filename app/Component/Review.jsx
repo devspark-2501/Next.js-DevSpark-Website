@@ -19,10 +19,21 @@ export default function Review() {
   ]);
 
   // Function to add a new message
-  const addMessage = () => {
+  const addMessage = async () => {
 
     // Prevent empty messages
     if (message.trim() === "") return;
+
+    // Send to backend
+    await fetch('/api/Review', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message
+      })
+    });
 
     // Create new post
     const newPost = {
@@ -136,4 +147,5 @@ export default function Review() {
       </div>
     </div>
   );
-} // now will backend logic to it !!
+} // now will write backend logic to it!!
+  // backend logic almost done!!
