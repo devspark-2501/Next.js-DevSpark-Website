@@ -2,6 +2,7 @@ var reviews = [];
 
 export async function GET() {
     return Response.json(reviews);
+    // Response.json({name, message})
 }
 
 export async function POST(request) {
