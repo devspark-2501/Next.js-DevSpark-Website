@@ -15,6 +15,10 @@ export default function Review() {
     {
       name: "Alex",
       message: "Amazing place to share ideas and grow together 🚀"
+    },
+    {
+      name:  "Kevin",
+      message: "The UI is awesome, helps me understand it better!!"
     }
   ]);
 
