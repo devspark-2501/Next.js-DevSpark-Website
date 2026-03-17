@@ -3,7 +3,6 @@
 export default function Error({ error, reset }) {
     return (
         <div className="h-screen bg-gray-950 text-white flex items-center justify-center px-6">
-
             <div className="max-w-lg w-full text-center">
 
                 <h1 className="text-5xl font-semibold mb-2 tracking-tight">
@@ -26,7 +25,6 @@ export default function Error({ error, reset }) {
                 </button> {/* reset an JS property to make the web reload and restart the site */}
 
             </div>
-
         </div>
     )
 }

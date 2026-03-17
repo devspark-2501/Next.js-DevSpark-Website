@@ -1,4 +1,4 @@
-var reviews = [];
+var reviews = [];                
 
 export async function GET() {
     return Response.json(reviews);
