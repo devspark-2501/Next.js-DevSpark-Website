@@ -10,9 +10,9 @@ import { metadata } from "./layout"
 //     template: "Not - Found | DevSpark Website"
 //   }
 // }
-export const metadata = {
-  title: "Not Found | DevSpark Website"
-}
+// export const metadata = {
+//   title: "Not Found | DevSpark Website"
+// }
 
 export default function NotFound() {
   return (
