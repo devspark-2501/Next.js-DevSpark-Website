@@ -1,3 +1,7 @@
+Day 2
+MangoDB Docs:
+
+
 What is MongoDB?
 MongoDB is a NoSQL document-oriented database. It stores data in JSON-like
 documents (actually BSON, a binary form of JSON).

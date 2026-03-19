@@ -84,8 +84,6 @@ The removal of documents from a collection.
 
 
 
-
-
 🔍 Query & Operators:
 
 Query
