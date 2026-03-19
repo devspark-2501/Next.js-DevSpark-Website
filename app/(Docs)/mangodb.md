@@ -93,3 +93,6 @@ A request to retrieve specific data from a database.
 
 Operator
 Special keywords (like $gt, $set) used to define conditions or modify data in queries.
+
+BSON or JSON ??:
+JSON is a text-based, human-readable data interchange format, while BSON (Binary JSON) is a binary-encoded format optimized for speed, space efficiency, and flexible data types within MongoDB. BSON supports more data types (e.g., Date, ObjectId) and allows faster parsing, making it ideal for storage, whereas JSON is standard for APIs and web data transmission

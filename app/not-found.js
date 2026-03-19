@@ -4,11 +4,14 @@ import "./globals.css"
 import Link from "next/link"
 import { metadata } from "./layout"
 
+// export const metadata = {
+//   title: {
+//     // default: "DevSpark Website",
+//     template: "Not - Found | DevSpark Website"
+//   }
+// }
 export const metadata = {
-  title: {
-    // default: "DevSpark Website",
-    template: "Not - Found | DevSpark Website"
-  }
+  title: "Not Found | DevSpark Website"
 }
 
 export default function NotFound() {
