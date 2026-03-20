@@ -5,7 +5,7 @@ db.products.insertMany([
  name: "Wireless Mouse",
  price: 799,
  category: "Electronics",
-stock: 120,
+ stock: 120,
  ratings: 4.5,
  tags: ["computer", "accessory", "wireless"],
  createdAt: new Date()
@@ -27,5 +27,17 @@ stock: 120,
  ratings: 4.6,
  tags: ["gaming", "laptop"],
  createdAt: new Date()
+}
+])
+
+
+db.reviews.insertMany([
+{
+    name: "Tanush Mathur",
+    message: "product is very good" 
+},
+{
+    name: "John Doe",
+    message: "the quality of products is too bad!!"
 }
 ])
