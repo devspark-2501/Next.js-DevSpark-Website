@@ -39,5 +39,13 @@ db.reviews.insertMany([
 {
     name: "John Doe",
     message: "the quality of products is too bad!!"
+},
+{
+    name: "Sam Curran",
+    message: "the mouse is very good, for just 4000, good product"
+},
+{
+    name: "Alex Jain",
+    message: "very bad site dont buy from here terrible staff"
 }
 ])
