@@ -5,6 +5,7 @@ import Hero from "./Component/Hero"; // Hero section component
 import CircleError from "./Component/CircleError";
 import CircleChat from "./Component/CircleChat";
 import Review from "./Component/Review";
+import Estore from "./Component/EStore";
 
 export default function Home() {
   // const [crash, setCrash] = useState(false);
@@ -69,6 +70,7 @@ export default function Home() {
       
       <Review /> {/* same HereSection 2 */}
 
+      <Estore /> {/* ecommerce section of the site!! */}
       {/* <h1>Homepage</h1>
       <button onClick={() => setCrash(true)}>
         Crash the page
