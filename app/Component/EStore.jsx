@@ -1,7 +1,8 @@
 import { IoFilter } from "react-icons/io5"; // react filter icon 
-import { Assets } from "../(asset)/asset.js";
+import { Assets } from "../(asset)/asset";
 // import { Assets } from "../(asset)/asset";
 // import { Assets } from "../(asset)/asset";
+import Image from "next/image"; // ✅ FIXED (important)
 
 export default function Estore() {
 
@@ -41,13 +42,21 @@ export default function Estore() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product, index) => (
-                    <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
-                        <img src={product.img} alt={product.name} className="w-full h-40 object-contain mb-4" />
+                    <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
+                        
+                        {/* ✅ FIXED IMAGE PART */}
+                        <Image
+                            src={product.img}
+                            alt={product.name}
+                            className="w-full h-40 object-contain mb-4"
+                        />
+
                         <h2 className="text-lg font-semibold">{product.name}</h2>
                         <p className="text-gray-400">{product.price}</p>
                         <p className={`text-sm ${product.stock === "Out of Stock" ? "text-red-500" : "text-green-500"}`}>
                             {product.stock}
                         </p>
+
                         <button className="mt-3 w-full bg-blue-600 py-2 rounded-lg hover:bg-blue-500">
                             Add to Cart
                         </button>

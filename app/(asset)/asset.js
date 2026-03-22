@@ -1,23 +1,23 @@
-import Black_Headphones from './Black_Headphones.png'
-import Blue_Headphones from './Blue_Headphones.png'
-import Gaming_Keyboard from './Gaming_Keyboard.png'
-import Keyboard from './Keyboard.png'
-import Monitor from './Monitor.png'
-import Mouse from './Mouse.png'
-import Red_Headphones from './Red_Headphones.png'
-import White_Keyboard from './White_Keyboard.png'
-import Black2_Headphones from './2Black_Headphones.png'
-import Blue2_Headphones from './2Blue_Headphones.png'
+import blackHeadphones from './Black_Headphones.png';
+import blueHeadphones from './Blue_Headphones.png';
+import gamingKeyboard from './Gaming_Keyboard.png';
+import keyboard from './Keyboard.png';
+import monitor from './Monitor.png';
+import mouse from './Mouse.png';
+import redHeadphones from './Red_Headphones.png';
+import whiteKeyboard from './White_Keyboard.png';
+import blackHeadphones2 from './2Black_Headphones.png';
+import blueHeadphones2 from './2Blue_Headphones.png';
 
 export const Assets = {
-  Black_Headphones,
-  Blue_Headphones,
-  Gaming_Keyboard,
-  Keyboard,
-  Monitor,
-  Mouse,
-  Red_Headphones,
-  White_Keyboard,
-  Black2_Headphones,
-  Blue2_Headphones
-}
+  Black_Headphones: blackHeadphones,
+  Blue_Headphones: blueHeadphones,
+  Gaming_Keyboard: gamingKeyboard,
+  Keyboard: keyboard,
+  Monitor: monitor,
+  Mouse: mouse,
+  Red_Headphones: redHeadphones,
+  White_Keyboard: whiteKeyboard,
+  Black2_Headphones: blackHeadphones2,
+  Blue2_Headphones: blueHeadphones2
+};
