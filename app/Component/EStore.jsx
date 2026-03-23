@@ -3,21 +3,37 @@ import { FaTag } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
 import { Assets } from "../assets/asset"; // updated
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Estore() {
 
-    const products = [
-        { name: "Black Headphones", price: "$120", stock: "In Stock", img: Assets.Black_Headphones },
-        { name: "Blue Headphones", price: "$110", stock: "In Stock", img: Assets.Blue_Headphones },
-        { name: "Gaming Keyboard", price: "$150", stock: "Low Stock", img: Assets.Gaming_Keyboard },
-        { name: "Keyboard", price: "$80", stock: "In Stock", img: Assets.Keyboard },
-        { name: "Monitor", price: "$300", stock: "In Stock", img: Assets.Monitor },
-        { name: "Mouse", price: "$40", stock: "In Stock", img: Assets.Mouse },
-        { name: "Red Headphones", price: "$130", stock: "Out of Stock", img: Assets.Red_Headphones },
-        { name: "White Keyboard", price: "$90", stock: "In Stock", img: Assets.White_Keyboard },
-        { name: "Black Headphones 2", price: "$140", stock: "In Stock", img: Assets.Black2_Headphones },
-        { name: "Blue Headphones 2", price: "$135", stock: "Low Stock", img: Assets.Blue2_Headphones },
-    ];
+    /*
+        const products = [
+            { name: "Black Headphones", price: "$120", stock: "In Stock", img: Assets.Black_Headphones },
+            { name: "Blue Headphones", price: "$110", stock: "In Stock", img: Assets.Blue_Headphones },
+            { name: "Gaming Keyboard", price: "$150", stock: "Low Stock", img: Assets.Gaming_Keyboard },
+            { name: "Keyboard", price: "$80", stock: "In Stock", img: Assets.Keyboard },
+            { name: "Monitor", price: "$300", stock: "In Stock", img: Assets.Monitor },
+            { name: "Mouse", price: "$40", stock: "In Stock", img: Assets.Mouse },
+            { name: "Red Headphones", price: "$130", stock: "Out of Stock", img: Assets.Red_Headphones },
+            { name: "White Keyboard", price: "$90", stock: "In Stock", img: Assets.White_Keyboard },
+            { name: "Black Headphones 2", price: "$140", stock: "In Stock", img: Assets.Black2_Headphones },
+            { name: "Blue Headphones 2", price: "$135", stock: "Low Stock", img: Assets.Blue2_Headphones },
+        ];
+    */
+
+    const [products, setProducts] = useState([]);
+
+    // fetch products from backend
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const res = await fetch("/api/products");
+            const data = await res.json();
+            setProducts(data);
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
         <div className="bg-gray-950 min-h-screen text-white p-6">
@@ -55,13 +71,15 @@ export default function Estore() {
                 {products.map((product, index) => (
                     <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
                         <Image
-                            src={product.img}
+                            src={product.image}   // ✅ fixed
                             alt={product.name}
+                            width={200}
+                            height={200}
                             className="w-full h-40 object-contain mb-4"
                         />
 
                         <h2 className="text-lg font-semibold">{product.name}</h2>
-                        <p className="text-gray-400">{product.price}</p>
+                        <p className="text-gray-400">${product.price}</p> {/* ✅ fixed */}
                         <p className={`text-sm ${product.stock === "Out of Stock" ? "text-red-500" : "text-green-500"}`}>
                             {product.stock}
                         </p>
