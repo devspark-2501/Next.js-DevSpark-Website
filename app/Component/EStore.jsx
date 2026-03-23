@@ -1,8 +1,8 @@
-import { IoFilter } from "react-icons/io5"; // react filter icon 
-import { Assets } from "../(asset)/asset";
-// import { Assets } from "../(asset)/asset";
-// import { Assets } from "../(asset)/asset";
-import Image from "next/image"; // ✅ FIXED (important)
+import { IoFilter } from "react-icons/io5";
+import { FaTag } from "react-icons/fa";
+import { MdInventory } from "react-icons/md";
+import { Assets } from "../assets/asset"; // updated
+import Image from "next/image";
 
 export default function Estore() {
 
@@ -23,9 +23,6 @@ export default function Estore() {
         <div className="bg-gray-950 min-h-screen text-white p-6">
             <div className="flex justify-between items-center mb-6">
                 <div className="pb-6">
-  {/* <p className="text-gray-400 text-2xl pl-8 uppercase tracking-wide">
-    Visit
-  </p> */}
                     <h1 className="text-6xl font-extrabold text-blue-500 leading-tight">
                         <span className="relative inline-block mr-3">
                             Our
@@ -33,18 +30,30 @@ export default function Estore() {
                         </span>
                         Ecommerce
                     </h1>
-                </div>            
-                {/* <span className="text-gray-400 text-lg mt-4">Visit<h1 className="text-6xl font-bold text-blue-500 pb-10 border-t-2 border-gray-400 pt-4"> Our Ecommerce.</h1></span> */}
-                <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
-                    Filter <IoFilter />
-                </button>
+                </div>
+
+                <div className="relative group">
+                    <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
+                        Filter <IoFilter />
+                    </button>
+
+                    <div className="absolute right-0 mt-2 w-44 bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50">
+                        <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                            <FaTag className="text-blue-400" />
+                            <span>Price</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                            <MdInventory className="text-green-400" />
+                            <span>In Stock</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product, index) => (
                     <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
-                        
-                        {/* ✅ FIXED IMAGE PART */}
                         <Image
                             src={product.img}
                             alt={product.name}
