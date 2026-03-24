@@ -1,3 +1,4 @@
+import './globals.css';
 // import "./globals.css"
 // import NavBar from "./Component/NavBar"
 // import Footer from "./Component/Footer"

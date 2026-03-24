@@ -6,7 +6,7 @@ import { IoSend } from "react-icons/io5"
 
 export default function CircleChat() {
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     return (
         <div>

@@ -1,3 +1,7 @@
+// import './globals.css'; // used to import global.css where input is edited
+
+import { IoMdCloudUpload } from "react-icons/io";
+import { MdAddBox } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { FaTag } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
@@ -23,6 +27,7 @@ export default function Estore() {
         ];
     */
 
+    const [open, setOpen] = useState(false);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]); // ✅ new
 
@@ -59,6 +64,22 @@ export default function Estore() {
 
     return (
         <div className="bg-gray-950 min-h-screen text-white p-6">
+
+            {/* ✅ moved style to correct place */}
+            <style>
+                {`
+                    input[type="number"]::-webkit-outer-spin-button,
+                    input[type="number"]::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+
+                    input[type="number"] {
+                        -moz-appearance: textfield;
+                    }
+                `}
+            </style>
+
             <div className="flex justify-between items-center mb-6">
                 <div className="pb-6">
                     <h1 className="text-6xl font-extrabold text-blue-500 leading-tight">
@@ -68,6 +89,44 @@ export default function Estore() {
                         </span>
                         Ecommerce
                     </h1>
+                </div>
+
+                {/* this will had the form we make */}
+                {open && ( 
+                    <div className="bg-gray-900 p-4 w-64 rounded-2xl absolute top-515 right-7 flex flex-col gap-3">
+                        
+                        <input 
+                            placeholder="Product Name"
+                            type="text"
+                            className="bg-gray-800 text-white placeholder-gray-400 px-3 py-2 outline-none rounded-full hover:border-2 border-gray-400 w-full"
+                        />
+
+                        <input 
+                            id="Input" 
+                            type="number"
+                            placeholder="Product Price"
+                            className="bg-gray-800 text-white placeholder-gray-400 px-3 py-2 outline-none rounded-full hover:border-2 border-gray-400 w-full appearance-none"
+                        />
+
+                        {/* <input 
+                            type="text"
+                            placeholder="In stock"
+                        /> */}
+
+                        <button 
+                            className="bg-green-500 hover:opacity-60 py-2 rounded-full w-full"
+                        >
+                           Upload {/* Upload&nbsp;<IoMdCloudUpload /> */}
+                        </button>
+                    </div>
+                )}
+
+                <div>
+                    <button 
+                        onClick={() => setOpen(!open)}
+                        className="absolute left-310 top-564 flex items-center bg-gray-800 px-6 py-2 rounded-lg hover:bg-gray-700">
+                        Add Product&nbsp;<MdAddBox />
+                    </button>
                 </div>
 
                 <div className="relative group">
@@ -105,7 +164,7 @@ export default function Estore() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {filteredProducts.map((product, index) => (  // ✅ changed here
+                {filteredProducts.map((product, index) => (
                     <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
                         <Image
                             src={product.image}
