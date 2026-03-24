@@ -1,6 +1,7 @@
 import { IoFilter } from "react-icons/io5";
 import { FaTag } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
+import { PiWarehouseFill } from "react-icons/pi";
 import { Assets } from "../assets/asset"; // updated
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -23,17 +24,38 @@ export default function Estore() {
     */
 
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]); // ✅ new
 
     // fetch products from backend
     useEffect(() => {
         const fetchProducts = async () => {
             const res = await fetch("/api/products");
             const data = await res.json();
+
             setProducts(data);
+            setFilteredProducts(data); // ✅ important
         };
 
         fetchProducts();
     }, []);
+
+    // ✅ SORT BY PRICE
+    const sortByPrice = () => {
+        const sorted = [...filteredProducts].sort((a, b) => a.price - b.price);
+        setFilteredProducts(sorted);
+    };
+
+    // ✅ FILTER IN STOCK
+    const filterInStock = () => {
+        const filtered = products.filter(p => p.stock === "in stock");
+        setFilteredProducts(filtered);
+    };
+
+    // ✅ FILTER OUT OF STOCK
+    const filterOutOfStock = () => {
+        const notStock = products.filter(a => a.stock === "out of stock");
+        setFilteredProducts(notStock);
+    };
 
     return (
         <div className="bg-gray-950 min-h-screen text-white p-6">
@@ -54,24 +76,39 @@ export default function Estore() {
                     </button>
 
                     <div className="absolute right-0 mt-2 w-44 bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50">
-                        <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                        
+                        {/* ✅ PRICE FILTER */}
+                        <div 
+                            onClick={sortByPrice}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
                             <FaTag className="text-blue-400" />
                             <span>Price</span>
                         </div>
 
-                        <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                        {/* ✅ STOCK FILTER */}
+                        <div 
+                            onClick={filterInStock}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
                             <MdInventory className="text-green-400" />
                             <span>In Stock</span>
+                        </div>
+
+                        {/* ✅ STOCK FILTER */}
+                        <div
+                            onClick={filterOutOfStock}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                            <PiWarehouseFill className="text-red-600" />
+                            <span>Out Of Stock</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {products.map((product, index) => (
+                {filteredProducts.map((product, index) => (  // ✅ changed here
                     <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
                         <Image
-                            src={product.image}   // ✅ fixed
+                            src={product.image}
                             alt={product.name}
                             width={200}
                             height={200}
@@ -79,8 +116,8 @@ export default function Estore() {
                         />
 
                         <h2 className="text-lg font-semibold">{product.name}</h2>
-                        <p className="text-gray-400">${product.price}</p> {/* ✅ fixed */}
-                        <p className={`text-sm ${product.stock === "Out of Stock" ? "text-red-500" : "text-green-500"}`}>
+                        <p className="text-gray-400">${product.price}</p>
+                        <p className={`text-sm ${product.stock === "out of stock" ? "text-red-500" : "text-green-500"}`}>
                             {product.stock}
                         </p>
 
