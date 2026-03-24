@@ -31,3 +31,18 @@ export async function GET() {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+// POST Request (ADD PRODUCT) ✅
+export async function POST(req) {
+    try {
+        await connectDB();
+
+        const body = await req.json();
+
+        const newProduct = await Product.create(body);
+
+        return NextResponse.json(newProduct, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}

@@ -29,7 +29,15 @@ export default function Estore() {
 
     const [open, setOpen] = useState(false);
     const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]); // ✅ new
+    const [filteredProducts, setFilteredProducts] = useState([]);
+
+    // ✅ NEW FORM STATE
+    const [formData, setFormData] = useState({
+        name: "",
+        price: "",
+        stock: "in stock",
+        image: ""
+    });
 
     // fetch products from backend
     useEffect(() => {
@@ -38,11 +46,42 @@ export default function Estore() {
             const data = await res.json();
 
             setProducts(data);
-            setFilteredProducts(data); // ✅ important
+            setFilteredProducts(data);
         };
 
         fetchProducts();
     }, []);
+
+    // ✅ HANDLE INPUT CHANGE
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // ✅ SUBMIT TO BACKEND
+    const handleSubmit = async () => {
+        await fetch("/api/products", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ...formData,
+                price: Number(formData.price)
+            })
+        });
+
+        setOpen(false);
+
+        // refresh UI
+        const res = await fetch("/api/products");
+        const data = await res.json();
+
+        setProducts(data);
+        setFilteredProducts(data);
+    };
 
     // ✅ SORT BY PRICE
     const sortByPrice = () => {
@@ -65,7 +104,6 @@ export default function Estore() {
     return (
         <div className="bg-gray-950 min-h-screen text-white p-6">
 
-            {/* ✅ moved style to correct place */}
             <style>
                 {`
                     input[type="number"]::-webkit-outer-spin-button,
@@ -91,32 +129,45 @@ export default function Estore() {
                     </h1>
                 </div>
 
-                {/* this will had the form we make */}
+                {/* FORM MODAL */}
                 {open && ( 
-                    <div className="bg-gray-900 p-4 w-64 rounded-2xl absolute top-515 right-7 flex flex-col gap-3">
-                        
+                    <div className="bg-gray-900 p-4 w-64 rounded-2xl absolute top-490 right-7 flex flex-col gap-3 border-2 border-gray-400">
+
                         <input 
+                            name="name"
                             placeholder="Product Name"
                             type="text"
-                            className="bg-gray-800 text-white placeholder-gray-400 px-3 py-2 outline-none rounded-full hover:border-2 border-gray-400 w-full"
+                            onChange={handleChange}
+                            className="bg-gray-800 text-white px-3 py-2 rounded-full"
                         />
 
                         <input 
-                            id="Input" 
+                            name="price"
                             type="number"
                             placeholder="Product Price"
-                            className="bg-gray-800 text-white placeholder-gray-400 px-3 py-2 outline-none rounded-full hover:border-2 border-gray-400 w-full appearance-none"
+                            onChange={handleChange}
+                            className="bg-gray-800 text-white px-3 py-2 rounded-full"
                         />
 
-                        {/* <input 
-                            type="text"
-                            placeholder="In stock"
-                        /> */}
+                        <input 
+                            name="stock"
+                            placeholder="in stock / out of stock"
+                            onChange={handleChange}
+                            className="bg-gray-800 text-white px-3 py-2 rounded-full"
+                        />
+
+                        <input 
+                            name="image"
+                            placeholder="/Mouse.png"
+                            onChange={handleChange}
+                            className="bg-gray-800 text-white px-3 py-2 rounded-full"
+                        />
 
                         <button 
+                            onClick={handleSubmit}
                             className="bg-green-500 hover:opacity-60 py-2 rounded-full w-full"
                         >
-                           Upload {/* Upload&nbsp;<IoMdCloudUpload /> */}
+                           Upload
                         </button>
                     </div>
                 )}
@@ -124,7 +175,7 @@ export default function Estore() {
                 <div>
                     <button 
                         onClick={() => setOpen(!open)}
-                        className="absolute left-310 top-564 flex items-center bg-gray-800 px-6 py-2 rounded-lg hover:bg-gray-700">
+                        className="flex items-center bg-gray-800 px-5 py-2 rounded-lg hover:bg-gray-700 absolute right-34 top-564">
                         Add Product&nbsp;<MdAddBox />
                     </button>
                 </div>
@@ -136,26 +187,17 @@ export default function Estore() {
 
                     <div className="absolute right-0 mt-2 w-44 bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50">
                         
-                        {/* ✅ PRICE FILTER */}
-                        <div 
-                            onClick={sortByPrice}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                        <div onClick={sortByPrice} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
                             <FaTag className="text-blue-400" />
                             <span>Price</span>
                         </div>
 
-                        {/* ✅ STOCK FILTER */}
-                        <div 
-                            onClick={filterInStock}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                        <div onClick={filterInStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
                             <MdInventory className="text-green-400" />
                             <span>In Stock</span>
                         </div>
 
-                        {/* ✅ STOCK FILTER */}
-                        <div
-                            onClick={filterOutOfStock}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                        <div onClick={filterOutOfStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
                             <PiWarehouseFill className="text-red-600" />
                             <span>Out Of Stock</span>
                         </div>
@@ -165,7 +207,7 @@ export default function Estore() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredProducts.map((product, index) => (
-                    <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 hover:shadow-lg transition">
+                    <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
                         <Image
                             src={product.image}
                             alt={product.name}
@@ -179,10 +221,6 @@ export default function Estore() {
                         <p className={`text-sm ${product.stock === "out of stock" ? "text-red-500" : "text-green-500"}`}>
                             {product.stock}
                         </p>
-
-                        <button className="mt-3 w-full bg-blue-600 py-2 rounded-lg hover:bg-blue-500">
-                            Add to Cart
-                        </button>
                     </div>
                 ))}
             </div>
