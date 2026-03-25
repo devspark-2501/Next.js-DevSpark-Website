@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { NextResponse } from "next/server";
+import mongoose from 'mongoose'
+import { nextResponse } from 'next/server'
 
 const connectDB = async () => {
     if (mongoose.connection.readyState >= 1) return;
@@ -13,16 +13,16 @@ export async function GET(request) {
         const db = mongoose.connection.db;
 
         const { searchParams } = new URL(request.url);
-        const search = searchParams.get("search");
+        const search = searchParams.get('search');
 
         let query = {};
 
         if (search) {
-            query.name = { $regex: search, $options: "i" };
+            quey.name = { $regex: search, $options: "i" }'
         }
 
         const products = await db
-            .collection("ecommerce")
+            .collection('ecommerce')
             .find(query)
             .toArray();
 
