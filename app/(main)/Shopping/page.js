@@ -2,10 +2,37 @@
 
 import { MdOutlineArrowRight } from "react-icons/md";
 import { FaMobileAlt, FaTv, FaTshirt, FaLaptop, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function ShoppingPage() {
     const [open, setOpen] = useState(false)
+
+    // ✅ NEW STATES
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [search, setSearch] = useState("");
+
+    // ✅ FETCH PRODUCTS
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const res = await fetch("/api/ecommerce");
+            const data = await res.json();
+
+            setProducts(data);
+            setFilteredProducts(data);
+        };
+
+        fetchProducts();
+    }, []);
+
+    // ✅ SEARCH LOGIC
+    useEffect(() => {
+        const filtered = products.filter(p =>
+            p.name.toLowerCase().includes(search.toLowerCase())
+        );
+
+        setFilteredProducts(filtered);
+    }, [search, products]);
 
     return (
         <div className='min-h-screen bg-gray-950 text-white'>
@@ -16,7 +43,6 @@ export default function ShoppingPage() {
                 {/* LEFT SIDE */}
                 <div className="flex items-center gap-8">
                     
-                    {/* Hamburger */}
                     <button 
                         onClick={() => setOpen(!open)}
                         className="flex flex-col justify-between w-9 h-7"
@@ -26,7 +52,6 @@ export default function ShoppingPage() {
                         <span className={`h-1 bg-white rounded transition-all duration-300 ${open ? '-rotate-45 -translate-y-3' : ''}`}></span>
                     </button>
 
-                    {/* Categories */}
                     <div className="hidden md:flex items-center gap-8 text-gray-300 text-base">
                         <div className="flex items-center gap-2 hover:text-white cursor-pointer transition">
                             <FaMobileAlt /> <span>Mobiles</span>
@@ -46,12 +71,14 @@ export default function ShoppingPage() {
                     </div>
                 </div>
 
-                {/* 🔍 SEARCH (BIGGER) */}
+                {/* 🔍 SEARCH */}
                 <div className="flex items-center w-[500px] bg-gray-800 rounded-xl overflow-hidden shadow-md">
                     
                     <input 
                         type="text" 
-                        placeholder="Search for products, brands and more..."
+                        placeholder="Search for products..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 px-4 py-3 bg-transparent outline-none text-sm placeholder-gray-400"
                     />
 
@@ -60,7 +87,7 @@ export default function ShoppingPage() {
                     </button>
                 </div>
 
-                {/* RIGHT SIDE ICONS */}
+                {/* RIGHT SIDE */}
                 <div className="flex items-center gap-6 text-xl">
                     
                     <div className="cursor-pointer hover:text-gray-300 transition">
@@ -77,7 +104,7 @@ export default function ShoppingPage() {
                 </div>
             </div>
 
-            {/* 📂 SIDEBAR MENU */}
+            {/* 📂 SIDEBAR */}
             <div className={`px-6 transition-all duration-300 ${open ? 'block' : 'hidden'}`}>
                 <div className="bg-gray-950 p-4 rounded-lg w-72 shadow-sm shadow-gray-400 mt-4">
                     
@@ -86,17 +113,15 @@ export default function ShoppingPage() {
                     </h1>
 
                     <ul className="space-y-2 text-sm font-medium mt-2">
-                        <li className="group flex items-center justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
                             <span>Bestsellers</span>
                             <MdOutlineArrowRight />
                         </li>
-
-                        <li className="group flex items-center justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
                             <span>New Releases</span>
                             <MdOutlineArrowRight />
                         </li>
-
-                        <li className="group flex items-center justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
                             <span>High Rated</span>
                             <MdOutlineArrowRight />
                         </li>
@@ -107,31 +132,20 @@ export default function ShoppingPage() {
                     <h1 className='font-bold text-xl bg-gray-900 px-4 py-2 rounded mt-4'>
                         Shop by Category
                     </h1>
-
-                    <ul className="space-y-2 text-sm font-medium mt-2">
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>Mobile</span><MdOutlineArrowRight />
-                        </li>
-
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>TV Appliances</span><MdOutlineArrowRight />
-                        </li>
-
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>Sports</span><MdOutlineArrowRight />
-                        </li>
-
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>Computers</span><MdOutlineArrowRight />
-                        </li>
-                        
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>Toys</span><MdOutlineArrowRight />
-                        </li>
-                    </ul>
-
                 </div>
             </div>
+
+            {/* 🛍️ SEARCH RESULTS */}
+            <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {filteredProducts.map((product, i) => (
+                    <div key={i} className="bg-gray-900 p-4 rounded-xl">
+                        <img src={product.image} className="h-32 mx-auto mb-3" />
+                        <h2>{product.name}</h2>
+                        <p>${product.price}</p>
+                    </div>
+                ))}
+            </div>
+
         </div>
     )
 }
