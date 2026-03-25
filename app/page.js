@@ -6,6 +6,7 @@ import CircleError from "./Component/CircleError";
 import CircleChat from "./Component/CircleChat";
 import Review from "./Component/Review";
 import Estore from "./Component/EStore";
+import ShoppingIcon from "./Component/ShoppingIcon";
 
 export default function Home() {
   // const [crash, setCrash] = useState(false);
@@ -78,6 +79,7 @@ export default function Home() {
 
       <CircleError /> {/* that random error page link, specfic for home page */}
       <CircleChat /> {/* same with the chat button */}
+      <ShoppingIcon /> {/* adds the shopping icon page!! */}
 
     </div>
   )

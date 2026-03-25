@@ -14,7 +14,7 @@ export default function CircleError() {
     return (
         <div className="">
             <button 
-                className="fixed bottom-6 right-6 bg-red-600 text-white p-4 rounded-full shadow-2xl hover:bg-red-700 hover:opacity-60 transition"
+                className="fixed bottom-6 right-6 bg-red-600 text-white p-4 rounded-full shadow-2xl hover:bg-red-700 transition"
                 onClick={() => setCrash(true)}
             >
                 <BsFillSendFill size={22} />
