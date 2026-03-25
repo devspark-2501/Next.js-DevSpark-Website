@@ -70,6 +70,3 @@ db.products.insertMany([
 
 
 
-
-
-
