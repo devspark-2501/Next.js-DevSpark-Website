@@ -1,12 +1,10 @@
 // import './globals.css'; // used to import global.css where input is edited
 
-import { IoMdCloudUpload } from "react-icons/io";
 import { MdAddBox } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { FaTag } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
 import { PiWarehouseFill } from "react-icons/pi";
-import { Assets } from "../assets/asset"; // updated
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -15,23 +13,14 @@ export default function Estore() {
     /*
         const products = [
             { name: "Black Headphones", price: "$120", stock: "In Stock", img: Assets.Black_Headphones },
-            { name: "Blue Headphones", price: "$110", stock: "In Stock", img: Assets.Blue_Headphones },
-            { name: "Gaming Keyboard", price: "$150", stock: "Low Stock", img: Assets.Gaming_Keyboard },
-            { name: "Keyboard", price: "$80", stock: "In Stock", img: Assets.Keyboard },
-            { name: "Monitor", price: "$300", stock: "In Stock", img: Assets.Monitor },
-            { name: "Mouse", price: "$40", stock: "In Stock", img: Assets.Mouse },
-            { name: "Red Headphones", price: "$130", stock: "Out of Stock", img: Assets.Red_Headphones },
-            { name: "White Keyboard", price: "$90", stock: "In Stock", img: Assets.White_Keyboard },
-            { name: "Black Headphones 2", price: "$140", stock: "In Stock", img: Assets.Black2_Headphones },
-            { name: "Blue Headphones 2", price: "$135", stock: "Low Stock", img: Assets.Blue2_Headphones },
+            ...
         ];
     */
 
     const [open, setOpen] = useState(false);
     const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = [];
 
-    // ✅ NEW FORM STATE
     const [formData, setFormData] = useState({
         name: "",
         price: "",
@@ -102,36 +91,102 @@ export default function Estore() {
     };
 
     return (
-        <div className="bg-gray-950 min-h-screen text-white p-6">
+        <>
+            {/* MAIN PAGE */}
+            <div className="bg-gray-950 min-h-screen text-white p-6">
 
-            <style>
-                {`
-                    input[type="number"]::-webkit-outer-spin-button,
-                    input[type="number"]::-webkit-inner-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
+                <style>
+                    {`
+                        input[type="number"]::-webkit-outer-spin-button,
+                        input[type="number"]::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
 
-                    input[type="number"] {
-                        -moz-appearance: textfield;
-                    }
-                `}
-            </style>
+                        input[type="number"] {
+                            -moz-appearance: textfield;
+                        }
+                    `}
+                </style>
 
-            <div className="flex justify-between items-center mb-6">
-                <div className="pb-6">
-                    <h1 className="text-6xl font-extrabold text-blue-500 leading-tight">
-                        <span className="relative inline-block mr-3">
-                            Our
-                            <span className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-8 h-1 bg-gray-400 rounded-full"></span>
-                        </span>
-                        Ecommerce
+                {/* HEADER */}
+                <div className="flex justify-between items-center mb-6">
+
+                    <h1 className="text-6xl font-extrabold text-blue-500">
+                        Our Ecommerce
                     </h1>
+
+                    <div className="flex gap-4">
+
+                        {/* ADD PRODUCT BUTTON */}
+                        <button 
+                            onClick={() => setOpen(!open)}
+                            className="flex items-center bg-gray-800 px-5 py-2 rounded-lg hover:bg-gray-700"
+                        >
+                            Add Product&nbsp;<MdAddBox />
+                        </button>
+
+                        {/* FILTER DROPDOWN */}
+                        <div className="relative group">
+                            <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
+                                Filter <IoFilter />
+                            </button>
+
+                            <div className="absolute right-0 mt-2 w-44 bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50">
+                                
+                                <div onClick={sortByPrice} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                                    <FaTag className="text-blue-400" />
+                                    Price
+                                </div>
+
+                                <div onClick={filterInStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                                    <MdInventory className="text-green-400" />
+                                    In Stock
+                                </div>
+
+                                <div onClick={filterOutOfStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
+                                    <PiWarehouseFill className="text-red-500" />
+                                    Out Of Stock
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
-                {/* FORM MODAL */}
-                {open && ( 
-                    <div className="bg-gray-900 p-4 w-64 rounded-2xl absolute top-490 right-7 flex flex-col gap-3 border-2 border-gray-400">
+                {/* PRODUCT GRID */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {filteredProducts.map((product, index) => (
+                        <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
+                            <Image
+                                src={product.image}
+                                alt={product.name}
+                                width={200}
+                                height={200}
+                                className="w-full h-40 object-contain mb-4"
+                            />
+
+                            <h2 className="text-lg font-semibold">{product.name}</h2>
+                            <p className="text-gray-400">${product.price}</p>
+                            <p className={`text-sm ${product.stock === "out of stock" ? "text-red-500" : "text-green-500"}`}>
+                                {product.stock}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ✅ MODAL (OUTSIDE MAIN DIV → THIS FIXES YOUR BUG) */}
+            {open && (
+                <>
+                    {/* BACKDROP */}
+                    <div 
+                        className="fixed inset-0 bg-black/50 z-40"
+                        onClick={() => setOpen(false)}
+                    />
+
+                    {/* MODAL */}
+                    <div className="fixed top-24 right-6 bg-gray-900 p-4 w-64 rounded-2xl flex flex-col gap-3 border-2 border-gray-400 z-50">
 
                         <input 
                             name="name"
@@ -165,65 +220,13 @@ export default function Estore() {
 
                         <button 
                             onClick={handleSubmit}
-                            className="bg-green-500 hover:opacity-60 py-2 rounded-full w-full"
+                            className="bg-green-500 hover:opacity-60 py-2 rounded-full"
                         >
-                           Upload
+                            Upload
                         </button>
                     </div>
-                )}
-
-                <div>
-                    <button 
-                        onClick={() => setOpen(!open)}
-                        className="flex items-center bg-gray-800 px-5 py-2 rounded-lg hover:bg-gray-700 absolute right-34 top-564">
-                        Add Product&nbsp;<MdAddBox />
-                    </button>
-                </div>
-
-                <div className="relative group">
-                    <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
-                        Filter <IoFilter />
-                    </button>
-
-                    <div className="absolute right-0 mt-2 w-44 bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 z-50">
-                        
-                        <div onClick={sortByPrice} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
-                            <FaTag className="text-blue-400" />
-                            <span>Price</span>
-                        </div>
-
-                        <div onClick={filterInStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
-                            <MdInventory className="text-green-400" />
-                            <span>In Stock</span>
-                        </div>
-
-                        <div onClick={filterOutOfStock} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-800 cursor-pointer">
-                            <PiWarehouseFill className="text-red-600" />
-                            <span>Out Of Stock</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {filteredProducts.map((product, index) => (
-                    <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
-                        <Image
-                            src={product.image}
-                            alt={product.name}
-                            width={200}
-                            height={200}
-                            className="w-full h-40 object-contain mb-4"
-                        />
-
-                        <h2 className="text-lg font-semibold">{product.name}</h2>
-                        <p className="text-gray-400">${product.price}</p>
-                        <p className={`text-sm ${product.stock === "out of stock" ? "text-red-500" : "text-green-500"}`}>
-                            {product.stock}
-                        </p>
-                    </div>
-                ))}
-            </div>
-        </div>
+                </>
+            )}
+        </>
     );
 }

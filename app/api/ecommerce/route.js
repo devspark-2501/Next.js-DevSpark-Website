@@ -21,15 +21,19 @@ export async function GET(request) {
             query.name = { $regex: search, $options: "i" };
         }
 
-        const products = await db
+        const ecommerceData = await db
             .collection("ecommerce")
             .find(query)
             .toArray();
 
-        console.log("DB:", mongoose.connection.name);
-        console.log("Collection: ecommerce");
+        const productsData = await db
+            .collection("products")
+            .find(query)
+            .toArray();
 
-        return NextResponse.json(products);
+        const combined = [...ecommerceData, ...productsData];
+
+        return NextResponse.json(combined);
 
     } catch (error) {
         console.error(error);
@@ -38,4 +42,5 @@ export async function GET(request) {
             { status: 500 }
         );
     }
+    
 }

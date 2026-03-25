@@ -5,27 +5,75 @@ import { FaMobileAlt, FaTv, FaTshirt, FaLaptop, FaSearch, FaShoppingCart, FaUser
 import { useState, useEffect } from 'react'
 
 export default function ShoppingPage() {
-    const [open, setOpen] = useState(false)
-    const [filteredProducts, setFilteredProducts] = useState([]);
+
+    const [products, setProducts] = useState([]);              // original data
+    const [filteredProducts, setFilteredProducts] = useState([]); // UI data
+    const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
 
+    // FETCH + SEARCH
     useEffect(() => {
         const delay = setTimeout(async () => {
             const res = await fetch(`/api/ecommerce?search=${search}`, {
                 cache: "no-store"
             });
             const data = await res.json();
-            setFilteredProducts(data);
+
+            setProducts(data);           // store original
+            setFilteredProducts(data);   // show results
         }, 300);
 
         return () => clearTimeout(delay);
     }, [search]);
 
+
+    // FILTER: MOBILE
+    const sortByMobile = () => {
+        const filtered = products.filter(
+            p => p.category === "mobile"
+        );
+        setFilteredProducts(filtered);
+        setOpen(false); // optional: close sidebar
+    };
+
+    // FILTER: TV
+    const sortByTv = () => {
+        const sorted = products.filter(
+            p => p.category === "tv"
+        );
+        setFilteredProducts(sorted)
+    }
+
+    // FILTER: FASHION
+    const sortByFashion = () => {
+        const sortDone = products.filter(
+            p => p.category === "fashion"
+        );
+        setFilteredProducts(sortDone)
+    }
+
+    // FILTER: COMPUTER 
+    const SortByComputer = () => {
+        const sortFilter = products.filter(
+            p => p.category === "computer"
+        );
+        setFilteredProducts(sortFilter)
+    }
+
+    // RESET FILTER
+    const resetFilter = () => {
+        setFilteredProducts(products);
+    };
+
     return (
         <div className='min-h-screen bg-gray-950 text-white'>
-            
+
+            {/* HEADER */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+
                 <div className="flex items-center gap-8">
+
+                    {/* HAMBURGER */}
                     <button 
                         onClick={() => setOpen(!open)}
                         className="flex flex-col justify-between w-9 h-7"
@@ -35,23 +83,39 @@ export default function ShoppingPage() {
                         <span className={`h-1 bg-white rounded transition-all duration-300 ${open ? '-rotate-45 -translate-y-3' : ''}`}></span>
                     </button>
 
+                    {/* DESKTOP NAV */}
                     <div className="hidden md:flex items-center gap-8 text-gray-300 text-base">
-                        <div className="flex items-center gap-2 hover:text-white cursor-pointer transition">
+                        
+                        <div
+                            onClick={sortByMobile}
+                            className="flex items-center gap-2 hover:text-white cursor-pointer"
+                        >
                             <FaMobileAlt /> <span>Mobiles</span>
                         </div>
-                        <div className="flex items-center gap-2 hover:text-white cursor-pointer transition">
+                        
+
+                        <div
+                            onClick={sortByTv} 
+                            className="flex items-center gap-2 hover:text-white cursor-pointer">
                             <FaTv /> <span>TV</span>
                         </div>
-                        <div className="flex items-center gap-2 hover:text-white cursor-pointer transition">
+
+                        <div
+                            onClick={sortByFashion} 
+                            className="flex items-center gap-2 hover:text-white cursor-pointer">
                             <FaTshirt /> <span>Fashion</span>
                         </div>
-                        <div className="flex items-center gap-2 hover:text-white cursor-pointer transition">
+
+                        <div
+                            onClick={SortByComputer} 
+                            className="flex items-center gap-2 hover:text-white cursor-pointer">
                             <FaLaptop /> <span>Computers</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center w-[500px] bg-gray-800 rounded-xl overflow-hidden shadow-md">
+                {/* SEARCH */}
+                <div className="flex items-center w-[500px] bg-gray-800 rounded-xl overflow-hidden">
                     <input 
                         type="text" 
                         placeholder="Search for products..."
@@ -64,11 +128,11 @@ export default function ShoppingPage() {
                     </button>
                 </div>
 
+                {/* ICONS */}
                 <div className="flex items-center gap-6 text-xl">
-                    <div className="cursor-pointer hover:text-gray-300 transition">
-                        <FaUser />
-                    </div>
-                    <div className="relative cursor-pointer hover:text-gray-300 transition">
+                    <FaUser className="cursor-pointer hover:text-gray-300" />
+
+                    <div className="relative cursor-pointer hover:text-gray-300">
                         <FaShoppingCart />
                         <span className="absolute -top-2 -right-2 text-xs bg-red-500 px-1 rounded-full">
                             2
@@ -77,35 +141,68 @@ export default function ShoppingPage() {
                 </div>
             </div>
 
-            <div className={`px-6 transition-all duration-300 ${open ? 'block' : 'hidden'}`}>
-                <div className="bg-gray-950 p-4 rounded-lg w-72 shadow-sm shadow-gray-400 mt-4">
-                    <h1 className='font-bold text-xl bg-gray-900 px-4 py-2 rounded'>
-                        Trending
-                    </h1>
+            {/* SIDEBAR + OVERLAY */}
+            <>
+                {/* OVERLAY */}
+                <div 
+                    className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                    onClick={() => setOpen(false)}
+                />
 
-                    <ul className="space-y-2 text-sm font-medium mt-2">
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>Bestsellers</span>
-                            <MdOutlineArrowRight />
-                        </li>
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>New Releases</span>
-                            <MdOutlineArrowRight />
-                        </li>
-                        <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
-                            <span>High Rated</span>
-                            <MdOutlineArrowRight />
-                        </li>
-                    </ul>
+                {/* SIDEBAR */}
+                <div className={`fixed top-0 left-0 h-full w-72 bg-gray-950 z-50 transform transition-transform duration-300 
+                    ${open ? 'translate-x-0' : '-translate-x-full'}`}>
 
-                    <hr className='border-gray-600 opacity-60 mt-4' />
-                
-                    <h1 className='font-bold text-xl bg-gray-900 px-4 py-2 rounded mt-4'>
-                        Shop by Category
-                    </h1>
+                    <div className="p-4">
+
+                        <h1 className='font-bold text-xl bg-gray-900 px-4 py-2 rounded'>
+                            Trending
+                        </h1>
+
+                        <ul className="space-y-2 text-sm font-medium mt-2">
+                            <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                                <span>Bestsellers</span>
+                                <MdOutlineArrowRight />
+                            </li>
+                            <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                                <span>New Releases</span>
+                                <MdOutlineArrowRight />
+                            </li>
+                            <li className="flex justify-between text-gray-400 hover:bg-gray-800 px-4 py-2 rounded-xl cursor-pointer">
+                                <span>High Rated</span>
+                                <MdOutlineArrowRight />
+                            </li>
+                        </ul>
+
+                        <hr className='border-gray-600 opacity-60 mt-4' />
+                    
+                        <h1 className='font-bold text-xl bg-gray-900 px-4 py-2 rounded mt-4'>
+                            Shop by Category
+                        </h1>
+
+                        {/* CATEGORY FILTER */}
+                        <div className="mt-3 space-y-2">
+                            {/*
+                                <div 
+                                    onClick={sortByMobile}
+                                    className="cursor-pointer hover:bg-gray-800 px-3 py-2 rounded"
+                                >
+                                    📱 Mobile
+                                </div>
+                            */}
+                            <div 
+                                onClick={resetFilter}
+                                className="cursor-pointer hover:bg-gray-800 px-3 py-2 rounded"
+                            >
+                                🔄 All Products
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+            </>
 
+            {/* PRODUCTS */}
             <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredProducts.map((product, i) => (
                     <div key={i} className="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
