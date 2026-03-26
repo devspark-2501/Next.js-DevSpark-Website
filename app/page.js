@@ -1,4 +1,4 @@
-'use client'
+'use client'; // must be first line
 import { useState } from "react";
 import Link from "next/link";
 import Hero from "./Component/Hero"; // Hero section component
@@ -9,78 +9,71 @@ import Estore from "./Component/EStore";
 import ShoppingIcon from "./Component/ShoppingIcon";
 
 export default function Home() {
-  // const [crash, setCrash] = useState(false);
-
-  // if (crash) {
-  //   throw new Error('YOU Crased the page')
-  // }
-  // // const [crash, setCrash] = useState(false)
-
-  // // if (crash) {
-  // //   throw new Error("You crashed the page!")
-  // // }
 
   return (
-    <div className="bg-gray-950 text-white">
+    <div className="bg-gray-950 text-white min-h-screen flex flex-col pt-24">
+      {/* pt-24 added so content is visible below fixed navbar */}
 
-      <div className="max-w-6xl mx-auto px-6 min-h-[80vh] flex items-center">
+      {/* Main Hero Section */}
+      <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center gap-12 min-h-[80vh]">
 
-        <div className="flex flex-col md:flex-row gap-12 w-full items-center">
+        {/* Text Content */}
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+            Build. Learn. <span className="text-blue-500">Create.</span>
+          </h1>
 
-          <div className="flex-1">
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-              Build. Learn. <span className="text-blue-500">Create.</span>
-            </h1>
+          <p className="mt-6 text-gray-400 text-lg">
+            Welcome to DevSpark 🚀  
+            This is where I build projects, explore Next.js, and improve my development skills every day.
+          </p>
 
-            <p className="mt-6 text-gray-400 text-lg">
-              Welcome to DevSpark 🚀  
-              This is where I build projects, explore Next.js, and improve my development skills every day.
-            </p>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start gap-4 sm:gap-6">
+            <Link 
+              href='/Projects' 
+              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold transition duration-300 shadow-lg text-center"
+            >
+              View Projects
+            </Link>
 
-            <div className="mt-8 flex gap-6">
-              <Link href='/Projects' className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold transition duration-300 shadow-lg">View Projects</Link>
-
-              <Link href='/Contact' className="border border-gray-600 hover:border-blue-500 px-6 py-3 rounded-xl font-semibold transition duration-300">Contact Me</Link>
-            </div>
+            <Link 
+              href='/Contact' 
+              className="border border-gray-600 hover:border-blue-500 px-6 py-3 rounded-xl font-semibold transition duration-300 text-center"
+            >
+              Contact Me
+            </Link>
           </div>
-
-          <div className="flex justify-center flex-1">
-            <div className="w-72 h-72 bg-blue-600/20 rounded-full blur-3xl absolute"></div>
-            <div className="relative bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-800">
-              <h2 className="text-xl font-semibold mb-4 text-blue-400">
-                🚀 Current Focus
-              </h2>
-              <ul className="space-y-3 text-gray-400">
-                <li>✔ Mastering Next.js App Router</li>
-                <li>✔ Building Full Stack Projects</li>
-                <li>✔ Improving UI with Tailwind</li>
-              </ul>
-            </div>
-          </div>
-
         </div>
 
-        {/* <div className="absolute top-180 ">
-          View Our, <br />
-          <span>Image Gallery</span>
-        </div> */}
+        {/* Focus Card */}
+        <div className="flex justify-center flex-1 relative w-full md:w-auto">
+          <div className="w-56 h-56 md:w-72 md:h-72 bg-blue-600/20 rounded-full blur-3xl absolute"></div>
+          <div className="relative bg-gray-900 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-800 z-10 w-full max-w-sm">
+            <h2 className="text-xl font-semibold mb-4 text-blue-400">
+              🚀 Current Focus
+            </h2>
+            <ul className="space-y-3 text-gray-400">
+              <li>✔ Mastering Next.js App Router</li>
+              <li>✔ Building Full Stack Projects</li>
+              <li>✔ Improving UI with Tailwind</li>
+            </ul>
+          </div>
+        </div>
 
       </div>
 
-      <Hero /> {/* Hero section componenet */}
-      
+      {/* Hero Section Component */}
+      <Hero /> {/* Hero section component */}
+
+      {/* Review Section */}
       <Review /> {/* same HereSection 2 */}
 
-      <Estore /> {/* ecommerce section of the site!! */}
-      {/* <h1>Homepage</h1>
-      <button onClick={() => setCrash(true)}>
-        Crash the page
-      </button> */}
+      {/* Safe rendering for Estore to prevent 'map of undefined' error */}
+      {Estore && <Estore />} {/* ecommerce section of the site!! */}
 
-      <CircleError /> {/* that random error page link, specfic for home page */}
-      <CircleChat /> {/* same with the chat button */}
-      <ShoppingIcon /> {/* adds the shopping icon page!! */}
-
+      <CircleError /> {/* random error page link, specific for home page */}
+      <CircleChat /> {/* chat button */}
+      <ShoppingIcon /> {/* shopping icon page */}
     </div>
   )
 }

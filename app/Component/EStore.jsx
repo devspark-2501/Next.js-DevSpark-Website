@@ -1,5 +1,4 @@
-// import './globals.css'; // used to import global.css where input is edited
-
+'use client'; // make sure it's client component
 import { MdAddBox } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { FaTag } from "react-icons/fa";
@@ -19,7 +18,7 @@ export default function Estore() {
 
     const [open, setOpen] = useState(false);
     const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = [];
+    const [filteredProducts, setFilteredProducts] = useState([]); // ✅ fixed
 
     const [formData, setFormData] = useState({
         name: "",
@@ -31,11 +30,17 @@ export default function Estore() {
     // fetch products from backend
     useEffect(() => {
         const fetchProducts = async () => {
-            const res = await fetch("/api/products");
-            const data = await res.json();
+            try {
+                const res = await fetch("/api/products");
+                const data = await res.json();
 
-            setProducts(data);
-            setFilteredProducts(data);
+                setProducts(data || []); // safe fallback
+                setFilteredProducts(data || []);
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+                setProducts([]);
+                setFilteredProducts([]);
+            }
         };
 
         fetchProducts();
@@ -51,25 +56,29 @@ export default function Estore() {
 
     // ✅ SUBMIT TO BACKEND
     const handleSubmit = async () => {
-        await fetch("/api/products", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                ...formData,
-                price: Number(formData.price)
-            })
-        });
+        try {
+            await fetch("/api/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    price: Number(formData.price)
+                })
+            });
 
-        setOpen(false);
+            setOpen(false);
 
-        // refresh UI
-        const res = await fetch("/api/products");
-        const data = await res.json();
+            // refresh UI
+            const res = await fetch("/api/products");
+            const data = await res.json();
 
-        setProducts(data);
-        setFilteredProducts(data);
+            setProducts(data || []);
+            setFilteredProducts(data || []);
+        } catch (error) {
+            console.error("Failed to submit product:", error);
+        }
     };
 
     // ✅ SORT BY PRICE
@@ -156,7 +165,7 @@ export default function Estore() {
 
                 {/* PRODUCT GRID */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {filteredProducts.map((product, index) => (
+                    {filteredProducts?.map((product, index) => ( // ✅ safe optional chaining
                         <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
                             <Image
                                 src={product.image}
