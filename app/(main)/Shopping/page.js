@@ -3,6 +3,8 @@
 import { MdOutlineArrowRight } from "react-icons/md";
 import { FaMobileAlt, FaTv, FaTshirt, FaLaptop, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useState, useEffect } from 'react'
+import Home from "@/app/page";
+import HomePage from "@/app/Component/Home";
 
 export default function ShoppingPage() {
 
@@ -53,7 +55,7 @@ export default function ShoppingPage() {
     }
 
     // FILTER: COMPUTER 
-    const SortByComputer = () => {
+    const sortByComputer = () => {
         const sortFilter = products.filter(
             p => p.category === "computer"
         );
@@ -69,7 +71,7 @@ export default function ShoppingPage() {
         <div className='min-h-screen bg-gray-950 text-white'>
 
             {/* HEADER */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+            <div className="sticky top-0 bg-gray-950 z-50 flex items-center justify-between px-6 py-4 border-b border-gray-800 gap-4 flex-wrap">
 
                 <div className="flex items-center gap-8">
 
@@ -107,7 +109,7 @@ export default function ShoppingPage() {
                         </div>
 
                         <div
-                            onClick={SortByComputer} 
+                            onClick={sortByComputer} 
                             className="flex items-center gap-2 hover:text-white cursor-pointer">
                             <FaLaptop /> <span>Computers</span>
                         </div>
@@ -115,7 +117,7 @@ export default function ShoppingPage() {
                 </div>
 
                 {/* SEARCH */}
-                <div className="flex items-center w-[500px] bg-gray-800 rounded-xl overflow-hidden">
+                <div className="flex items-center flex-1 min-w-[150px] max-w-[500px] bg-gray-800 rounded-xl overflow-hidden">
                     <input 
                         type="text" 
                         placeholder="Search for products..."
@@ -203,11 +205,12 @@ export default function ShoppingPage() {
             </>
 
             {/* PRODUCTS */}
-            <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="p-6 mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredProducts.map((product, i) => (
                     <div key={i} className="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
                         <img 
                             src={product.image} 
+                            alt={product.name}
                             className="h-32 mx-auto mb-3 object-contain"
                         />
                         <h2 className="text-lg font-semibold">{product.name}</h2>
@@ -216,8 +219,9 @@ export default function ShoppingPage() {
                         <p className="text-xs text-gray-500 mt-1">{product.category}</p>
                     </div>
                 ))}
+                <HomePage />
             </div>
-
+                
         </div>
     )
 }
