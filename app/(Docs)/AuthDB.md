@@ -1,3 +1,4 @@
+// I
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
@@ -57,3 +58,27 @@ const handler = NextAuth({
 });
 
 export { handler as GET, handler as POST };
+
+// II
+events: {
+    async signIn({ user }) {
+        try {
+            const client = await clientPromise
+
+            const db = client.db("myDB");
+
+            const existingUser = await db
+                .collection("authUser")
+                .findOne(email: user.email );
+
+            if (!existinfUser) {
+                await db.collection("authUser").insertOne({
+                    name: user.name,
+                    email: user.email,
+                    image: user.image,
+                    createdAt: new Date(),
+                });
+            }
+        }
+    }
+}

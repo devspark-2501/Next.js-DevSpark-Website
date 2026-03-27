@@ -34,8 +34,15 @@ export default function Estore() {
                 const res = await fetch("/api/products");
                 const data = await res.json();
 
-                setProducts(data || []); // safe fallback
-                setFilteredProducts(data || []);
+                console.log("API DATA:", data); // 🔍 debug
+
+                // ✅ FIX: ensure array
+                const productArray = Array.isArray(data)
+                    ? data
+                    : data.products || [];
+
+                setProducts(productArray); // safe fallback
+                setFilteredProducts(productArray);
             } catch (error) {
                 console.error("Failed to fetch products:", error);
                 setProducts([]);
@@ -74,8 +81,15 @@ export default function Estore() {
             const res = await fetch("/api/products");
             const data = await res.json();
 
-            setProducts(data || []);
-            setFilteredProducts(data || []);
+            console.log("REFETCH DATA:", data); // 🔍 debug
+
+            // ✅ FIX: ensure array
+            const productArray = Array.isArray(data)
+                ? data
+                : data.products || [];
+
+            setProducts(productArray);
+            setFilteredProducts(productArray);
         } catch (error) {
             console.error("Failed to submit product:", error);
         }
@@ -83,6 +97,7 @@ export default function Estore() {
 
     // ✅ SORT BY PRICE
     const sortByPrice = () => {
+        if (!Array.isArray(filteredProducts)) return; // 🛡️ safety
         const sorted = [...filteredProducts].sort((a, b) => a.price - b.price);
         setFilteredProducts(sorted);
     };
@@ -165,7 +180,7 @@ export default function Estore() {
 
                 {/* PRODUCT GRID */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {filteredProducts?.map((product, index) => ( // ✅ safe optional chaining
+                    {Array.isArray(filteredProducts) && filteredProducts.map((product, index) => ( // ✅ FIXED SAFETY
                         <div key={index} className="bg-gray-900 rounded-xl p-4 hover:scale-105 transition">
                             <Image
                                 src={product.image}
