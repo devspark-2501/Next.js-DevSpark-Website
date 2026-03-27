@@ -37,10 +37,10 @@ export default function Home() {
             </Link>
 
             <Link 
-              href='/Contact' 
+              href='/Auth' 
               className="border border-gray-600 hover:border-blue-500 px-6 py-3 rounded-xl font-semibold transition duration-300 text-center"
             >
-              Contact Me
+              Auth
             </Link>
           </div>
         </div>

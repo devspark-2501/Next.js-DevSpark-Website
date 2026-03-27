@@ -1,6 +1,7 @@
 import "./globals.css"
 import NavBar from "./Component/NavBar"
 import Footer from "./Component/Footer"
+import SessionWrapper from "./Component/SessionWrapper"
 
 export const metadata = {
   title: {
@@ -11,15 +12,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-    // throw new Error(""); {/* this line of code trigger global-error.js */}
+  // throw new Error(""); {/* this line of code trigger global-error.js */}
 
   return (
     <html lang="en">
       <body className="bg-gray-950 text-white">
-        <NavBar />
-        {children}
-        <Footer />
+        <SessionWrapper>
+          <NavBar />
+          {children}
+          <Footer />
+        </SessionWrapper>
       </body>
     </html>
   )
 }
+
