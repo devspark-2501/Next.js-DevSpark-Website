@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
@@ -13,47 +15,52 @@ const handler = NextAuth({
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+      authorization: {
+        params: {
+          scope: "read:user user:email", // ✅ get email from GitHub
+        },
+      },
     }),
   ],
 
-  events: {
+  callbacks: {
     async signIn({ user }) {
       try {
         const client = await clientPromise;
+        console.log("✅ Connected to MongoDB");
 
-        // DB name
         const db = client.db("myDB");
+
+        const email =
+          user.email ||
+          `${user.name?.replace(/\s+/g, "").toLowerCase()}@github.com`;
+
+        console.log("USER:", user);
 
         const existingUser = await db
           .collection("authUser")
-          .findOne({ email: user.email });
+          .findOne({ email });
 
         if (!existingUser) {
           await db.collection("authUser").insertOne({
             name: user.name,
-            email: user.email,
+            email,
             image: user.image,
             createdAt: new Date(),
           });
 
-          console.log("✅ User saved to authUser");
+          console.log("✅ User saved to DB");
         } else {
           console.log("⚠️ User already exists");
         }
-      } catch (error) {
-        console.error("❌ Error saving user:", error);
-      }
-    },
-  },
 
-  callbacks: {
-    async session({ session, token }) {
-      if (session?.user) {
-        session.user.id = token.sub;
+        return true;
+      } catch (error) {
+        console.error("DB Error:", error);
+        return true;
       }
-      return session;
     },
-  },
+  }
 });
 
 export { handler as GET, handler as POST };

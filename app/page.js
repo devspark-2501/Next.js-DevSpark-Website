@@ -1,4 +1,5 @@
 'use client'; // must be first line
+
 import { useState } from "react";
 import Link from "next/link";
 import Hero from "./Component/Hero"; // Hero section component
