@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "@/lib/db";
 
+export const runtime = "nodejs";
+
 const handler = NextAuth({
   session: {
     strategy: "jwt",
@@ -13,7 +15,7 @@ const handler = NextAuth({
 
       credentials: {
         email: { label: "Email", type: "text" },
-        password: { label: "password", type: "password" },
+        password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials) {
@@ -21,21 +23,17 @@ const handler = NextAuth({
 
         try {
           const client = await clientPromise;
-          const db = client.db("myDB");
+          const db = client.db("products"); // match your URI
 
           const user = await db
             .collection("authUser")
             .findOne({ email: credentials.email });
 
-          if (!user) {
-            throw new Error("user not found");
-          }
+          if (!user) return null;
 
           const isMatch = user.password === credentials.password;
 
-          if (!isMatch) {
-            throw new Error("check your password");
-          }
+          if (!isMatch) return null;
 
           return {
             id: user._id.toString(),
@@ -43,7 +41,8 @@ const handler = NextAuth({
             name: user.name,
           };
         } catch (error) {
-          throw new Error(error.message);
+          console.error(error);
+          return null;
         }
       },
     }),
