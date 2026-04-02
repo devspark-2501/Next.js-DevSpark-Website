@@ -1,7 +1,3 @@
-whats resAPI like i was doing backend with only thrree fpur thing like post put get delete and these are calles http mthods ig so whats differnet between restapi and http and also doing backend in next.js
-
-You’re actually very close already — you’ve been using the core ideas without realizing the bigger picture. Let’s cleanly connect everything 👇
-
 🔹 1. What you were doing (GET, POST, PUT, DELETE)
 Those are HTTP methods.
 
@@ -132,9 +128,6 @@ If you want, I can show:
 Just tell me 👍
 
 
-define all these terms and get some example code to with it proepr defs not kiddish
-
-Got it — let’s do this properly, with clear definitions + correct terminology + real code (not oversimplified).
 
 🔹 1. HTTP (HyperText Transfer Protocol)
 Definition:
