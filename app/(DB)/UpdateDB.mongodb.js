@@ -1,5 +1,4 @@
-use('ecommerce');
-
+use('ecommerce'); // important to use ecommerce collection only!!
 // db.products.updateOne(
 // { name: "Wireless Mouse" },
 // { $set: { price: 4000 } }
