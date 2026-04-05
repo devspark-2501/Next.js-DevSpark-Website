@@ -1,4 +1,4 @@
-use ('ecommerce');
+use ('ecommerce'); // selects the ecommerce collection
 
 // db.reviews.deleteOne({ name: "Tanush Mathur" }) 
 // delete review by the name of tanush mathur
