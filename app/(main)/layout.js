@@ -12,6 +12,7 @@ import ShoppingIcon from "../Component/ShoppingIcon"
 // import Footer from "../Component/Footer"
 // import NavBar from "../Component/NavBar"
 
+// Home Page of DevSpark
 export const metadata = {
   title: "My Website",
   // description: "Created with Next.js",
