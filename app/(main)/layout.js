@@ -3,6 +3,7 @@
 // import NavBar from "./Component/NavBar"
 // import Footer from "./Component/Footer"
 
+// correct imports
 import CircleChat from "../Component/CircleChat"
 import CircleError from "../Component/CircleError"
 import ShoppingIcon from "../Component/ShoppingIcon"
