@@ -1,3 +1,4 @@
+// fake data!!
 let user = []
 
 export async functiom POST(req) {
